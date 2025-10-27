@@ -7,15 +7,18 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
-
+  compile:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: compile-target
       run: ./start.sh -c
     - name: compile-library
       run: ./start.sh -cl
-    - name: run-tests
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: run-ctests
       run: ./start.sh -ct
