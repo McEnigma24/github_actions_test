@@ -81,7 +81,7 @@ function env_prep()
 
     chmod +x scripts/*.sh
 
-    # clear_file "$DIR_BUILD/CMakeCache.txt" # nie dało się inaczej, bo co chwila Cachował zmienne TEMPLATE___BUILD_LIBRARY i TEMPLATE___CTEST_ACTIVE,
+    # clear_file "$DIR_BUILD/CMakeCache.txt" # nie dało się inaczej, bo co chwila Cachował zmienne GITHUB_ACTIONS_TEST___BUILD_LIBRARY i GITHUB_ACTIONS_TEST___CTEST_ACTIVE,
     #                                        # nawet jeśli po zbudowaniu odtwarzałem je do poprzednich wartości
 
     # 1. Pętla getopts

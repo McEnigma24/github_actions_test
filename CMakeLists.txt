@@ -23,6 +23,11 @@ aux_source_directory(_test TEST_SOURCES)
 string(LENGTH "${CMAKE_SOURCE_DIR}/" SOURCE_PATH_SIZE)
 add_definitions(-DSOURCE_PATH_SIZE=${SOURCE_PATH_SIZE})
 
+# Change names of:
+# GITHUB_ACTIONS_TEST___CTEST_ACTIVE
+# GITHUB_ACTIONS_TEST___BUILD_LIBRARY
+
+set(CONST_TARGET_NAME "GITHUB_ACTIONS_TEST")
 
 # COMPILER FLAGS #
 
@@ -85,11 +90,9 @@ include_directories(${core_SOURCE_DIR}/_inc)
 
 
 
-set(CONST_TARGET_NAME "TEMPLATE")
+option(GITHUB_ACTIONS_TEST___BUILD_LIBRARY "Build library instead of executable" OFF) # default value - could be overwritten by provided FLAG
 
-option(TEMPLATE___BUILD_LIBRARY "Build library instead of executable" OFF) # default value - could be overwritten by provided FLAG
-
-if(TEMPLATE___BUILD_LIBRARY)
+if(GITHUB_ACTIONS_TEST___BUILD_LIBRARY)
     message(WARNING "Building library")
     
     set(TARGET_NAME "${CONST_TARGET_NAME}")
@@ -107,9 +110,9 @@ else()
     target_link_libraries(${TARGET_NAME} PUBLIC ${ALL_LIBRARIES})
 endif()
 
-option(TEMPLATE___CTEST_ACTIVE "Testing is active" OFF)  # default value - could be overwritten by provided FLAG
+option(GITHUB_ACTIONS_TEST___CTEST_ACTIVE "Testing is active" OFF)  # default value - could be overwritten by provided FLAG
 
-if(TEMPLATE___CTEST_ACTIVE)
+if(GITHUB_ACTIONS_TEST___CTEST_ACTIVE)
     message(WARNING "TESTING...")
     # Włączenie testów
     enable_testing()
