@@ -136,8 +136,11 @@ install_packages
 timer_start
 {
     cd scripts
-    script -q -c "$SCRIPT 2>&1" /dev/null | tee $LOG
+    $SCRIPT 2>&1 | tee $LOG
+    ret=${PIPESTATUS[0]}
 }
 timer_end
 
 timer_print
+
+exit ${ret}
