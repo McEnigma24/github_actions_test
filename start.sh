@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Debug mode for GitHub Actions
-if [ "$GITHUB_ACTIONS" = "true" ]; then
-    set -x
-fi
-
 clear
 
 # THIS one works the same way #
@@ -82,6 +77,7 @@ function env_prep()
     create_dir "$DIR_TARGET"
     create_dir "$DIR_EXTERNAL"
     create_dir "$DIR_LOG"
+    create_dir "$DIR_OUTPUT"
     create_dir "$DIR_RUN_TIME_CONFIG"
 
     chmod +x scripts/*.sh
@@ -140,34 +136,10 @@ install_packages
 
 timer_start
 cd scripts
-
-# Debug log path in GitHub Actions
-if [ "$GITHUB_ACTIONS" = "true" ]; then
-    echo "DEBUG: LOG path = $LOG"
-    echo "DEBUG: Current directory = $(pwd)"
-    echo "DEBUG: SCRIPT variable = $SCRIPT"
-fi
-
 $SCRIPT 2>&1 | tee $LOG
 ret=${PIPESTATUS[0]}
-
-# Debug in GitHub Actions
-if [ "$GITHUB_ACTIONS" = "true" ]; then
-    echo "DEBUG: Script execution completed"
-    echo "DEBUG: PIPESTATUS array immediately after pipe: ${PIPESTATUS[@]}"
-    echo "DEBUG: PIPESTATUS[0] = ${PIPESTATUS[0]}"
-    echo "DEBUG: ret variable = $ret"
-    echo "DEBUG: Last command exit code: $?"
-fi
-
 timer_end
 
 timer_print
-
-# Debug exit code in GitHub Actions
-if [ "$GITHUB_ACTIONS" = "true" ]; then
-    echo "DEBUG: Final exit code will be: $ret"
-    echo "DEBUG: PIPESTATUS array: ${PIPESTATUS[@]}"
-fi
 
 exit $ret

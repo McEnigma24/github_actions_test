@@ -1,11 +1,12 @@
 # ✅ ❌ #
 
 # Debug mode for GitHub Actions - disable strict error handling
-if [ "$GITHUB_ACTIONS" = "true" ]; then
-    set -o pipefail
-else
+# if [ "$GITHUB_ACTIONS" = "true" ]; then
+#     set -o pipefail
+# else
     set -eo pipefail
-fi
+# fi
+
 # set -x
 
 PACKAGES=(
