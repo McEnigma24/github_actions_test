@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Debug mode for GitHub Actions
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    set -x
+fi
+
 clear
 
 # THIS one works the same way #
@@ -137,8 +142,22 @@ timer_start
 cd scripts
 $SCRIPT 2>&1 | tee $LOG
 ret=${PIPESTATUS[0]}
+
+# Debug in GitHub Actions
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    echo "DEBUG: Script execution completed"
+    echo "DEBUG: PIPESTATUS[0] = ${PIPESTATUS[0]}"
+    echo "DEBUG: ret variable = $ret"
+fi
+
 timer_end
 
 timer_print
+
+# Debug exit code in GitHub Actions
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    echo "DEBUG: Final exit code will be: $ret"
+    echo "DEBUG: PIPESTATUS array: ${PIPESTATUS[@]}"
+fi
 
 exit $ret
