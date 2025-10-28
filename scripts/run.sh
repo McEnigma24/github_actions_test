@@ -9,21 +9,35 @@ function run_and_collect()
 
     if [[ "$total_files" -eq 0 ]]; then
     {
-        echo "❌ NO exe to run"
-        exit 1
+        if [ "$FLAG_BUILDING_LIBRARY" != "Yes" ]; then
+            echo "❌ NO exe to run"
+            exit 1
+        else
+            lib_files=$(ls -1 $DIR_BUILD/*.{so,a} 2>/dev/null | wc -l)
+            if [[ "$lib_files" -eq 0 ]]; then
+                echo "❌ NO library files (.so/.a) found in $DIR_BUILD"
+                exit 1
+            else
+                echo -e "✅ Found $lib_files library files:\n"
+                ls -1 $DIR_BUILD/*.{so,a} 2>/dev/null
+            fi
+        fi
     }
     fi
 
-    for exe in $DIR_TARGET/*; do
-    {
-        log_name=$(basename $exe); log_name="${log_name%.*}";
-        
-        # echo -e "\nRUN ($current_file/$total_files) - $exe"; ./$exe > $DIR_LOG/$log_name.log;
-        echo -e "\nRUN ($current_file/$total_files) - $exe"; ./$exe
+    # Only run executables if we're not building libraries
+    if [ "$FLAG_BUILDING_LIBRARY" != "Yes" ]; then
+        for exe in $DIR_TARGET/*; do
+        {
+            log_name=$(basename $exe); log_name="${log_name%.*}";
+            
+            # echo -e "\nRUN ($current_file/$total_files) - $exe"; ./$exe > $DIR_LOG/$log_name.log;
+            echo -e "\nRUN ($current_file/$total_files) - $exe"; ./$exe
 
-        current_file=$((current_file + 1))
-    }
-    done
+            current_file=$((current_file + 1))
+        }
+        done
+    fi
 }
 
 
