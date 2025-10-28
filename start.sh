@@ -52,7 +52,7 @@ function install_packages()
                 echo ""
             else
                 echo -e "\nstart_all.sh - ERROR - unable to install this package: $PACKAGE\n"
-                exit
+                exit 1
             fi
         fi
     }
@@ -134,13 +134,11 @@ env_prep "$@"
 install_packages
 
 timer_start
-{
-    cd scripts
-    $SCRIPT 2>&1 | tee $LOG
-    ret=${PIPESTATUS[0]}
-}
+cd scripts
+$SCRIPT 2>&1 | tee $LOG
+ret=${PIPESTATUS[0]}
 timer_end
 
 timer_print
 
-exit ${ret}
+exit $ret

@@ -29,7 +29,7 @@ function build_all()
         echo ""
     else
         echo -e "\nproduction.sh - ERROR - unable to BUILD\n"
-        exit
+        exit 1
     fi
 }
 function run_tests()
@@ -39,7 +39,7 @@ function run_tests()
     if [ "$FLAG_TESTING_ACTIVE" == "Yes" ]; then
     {
         echo -e " ✅\n";
-        if ! ctest --rerun-failed --output-on-failure; then exit; fi
+        if ! ctest --rerun-failed --output-on-failure; then exit 1; fi
     }
     else
     {
