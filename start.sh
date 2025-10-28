@@ -140,14 +140,24 @@ install_packages
 
 timer_start
 cd scripts
+
+# Debug log path in GitHub Actions
+if [ "$GITHUB_ACTIONS" = "true" ]; then
+    echo "DEBUG: LOG path = $LOG"
+    echo "DEBUG: Current directory = $(pwd)"
+    echo "DEBUG: SCRIPT variable = $SCRIPT"
+fi
+
 $SCRIPT 2>&1 | tee $LOG
 ret=${PIPESTATUS[0]}
 
 # Debug in GitHub Actions
 if [ "$GITHUB_ACTIONS" = "true" ]; then
     echo "DEBUG: Script execution completed"
+    echo "DEBUG: PIPESTATUS array immediately after pipe: ${PIPESTATUS[@]}"
     echo "DEBUG: PIPESTATUS[0] = ${PIPESTATUS[0]}"
     echo "DEBUG: ret variable = $ret"
+    echo "DEBUG: Last command exit code: $?"
 fi
 
 timer_end
